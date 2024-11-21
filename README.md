@@ -188,10 +188,6 @@ The frontend is built with [Streamlit](https://streamlit.io/) for interactive qu
 
 ---
 
-Here's the updated **README** section with the mention of Ada for embedding generation in the **Improvements Made** section:
-
----
-
 ## **Improvements Made**
 
 1. **Added Contextual Similarity Metrics**:
@@ -207,12 +203,13 @@ Here's the updated **README** section with the mention of Ada for embedding gene
 4. **Improved Error Handling**:
    - Handles empty or malformed responses gracefully, providing user-friendly messages for irrelevant or out-of-scope queries.
 
-5. **Expanded Functionality**:
-   - Supports filtering irrelevant queries based on context similarity thresholds, improving system responsiveness and user experience.
-
----
-
-Here's the updated **Stretch Goals** section with improvements:
+5. **Expanded Functionality**  
+   - **Supports Filtering Irrelevant Queries**  
+     - The system filters out irrelevant queries based on context similarity thresholds, enhancing system responsiveness and improving the overall user experience.  
+     - **Current Threshold Setting**  
+       - The similarity threshold is currently set low to accommodate the limitations of the embedding model being used.  
+     - **Reason**  
+       - The embeddings are generated using a generalized model (`text-embedding-ada-002` or `text-embedding-3-small`), which may not capture domain-specific nuances with high precision. A low threshold ensures that even moderately relevant queries are processed without being prematurely discarded.  
 
 ---
 
@@ -224,15 +221,6 @@ Here's the updated **Stretch Goals** section with improvements:
 - **Improved Embedding Models**: Experiment with other state-of-the-art embedding models or fine-tuned models for domain-specific tasks.
 - **Interactive Evaluation Dashboard**: Build a dashboard to visualize evaluation metrics (BM25, TF-IDF, Jaccard) and track system performance over time.
 - **Incremental Indexing**: Add support for incremental updates to the vector store without requiring a full reloading of embeddings.
-
----
-
-## **Formatting and Analysis**
-
-- Use pre-configured formatting and static analysis tools for clean code:
-  ```bash
-  make lint
-  ```
 
 ---
 

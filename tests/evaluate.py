@@ -2,6 +2,7 @@
 
 import requests
 import csv
+import os
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from rank_bm25 import BM25Okapi
@@ -145,19 +146,19 @@ def evaluate():
             if response.status_code == 200:
                 response_data = response.json()
                 actual_response = response_data.get("message", "No message in response")
-                retrieved_context = response_data.get("context", [])  # Extract chunks as a list
-                print("retrieved_context:", retrieved_context)  # Debug retrieved chunks
+                retrieved_context = response_data.get("context", "")  # Extract context as a string
+                print("Retrieved Context (Frontend Debug):", retrieved_context)  # Debug retrieved chunks
             else:
                 actual_response = f"Error: Received status code {response.status_code}"
-                retrieved_context = []
+                retrieved_context = ""
         except Exception as e:
             actual_response = f"Error: {e}"
-            retrieved_context = []
+            retrieved_context = ""
 
         # Compute similarity scores
-        bm25 = bm25_score(query, retrieved_context)
-        tfidf_cosine = tfidf_cosine_similarity(query, retrieved_context)
-        jaccard = jaccard_similarity(query, retrieved_context)
+        bm25 = bm25_score(query, [retrieved_context])
+        tfidf_cosine = tfidf_cosine_similarity(query, [retrieved_context])
+        jaccard = jaccard_similarity(query, [retrieved_context])
 
         # Append results
         results.append({
@@ -178,7 +179,6 @@ def evaluate():
         writer.writerows(results)
 
     print("Evaluation complete. Results saved to evaluation_results_with_similarity.csv.")
-
 
 # ---------------- Entry Point ----------------
 

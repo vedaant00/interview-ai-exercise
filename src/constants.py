@@ -43,7 +43,7 @@ class Settings(BaseSettings):
     # Secure environment variables
     openai_api_key: SecretStr
     openai_model: str = "gpt-4o"
-    embeddings_model: str = "text-embedding-3-small" # text-embedding-ada-002 
+    embeddings_model: str = "text-embedding-ada-002" # text-embedding-3-small
 
     # Application constants
     collection_name: str = "documents"

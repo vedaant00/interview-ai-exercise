@@ -178,7 +178,7 @@ async def load_docs_route() -> LoadDocumentsOutput:
     return LoadDocumentsOutput(status="ok")
 
 @app.post("/chat")
-def chat_route(chat_query: ChatQuery) -> ChatOutput:
+def chat_route(chat_query: ChatQuery) -> dict:
     """
     Process a chat query and return a response based on document context.
 
@@ -186,7 +186,7 @@ def chat_route(chat_query: ChatQuery) -> ChatOutput:
         chat_query (ChatQuery): Input query.
 
     Returns:
-        ChatOutput: Chat response with context and message.
+        dict: Chat response with serialized context and message.
     """
     try:
         # Load precomputed embeddings
@@ -194,16 +194,16 @@ def chat_route(chat_query: ChatQuery) -> ChatOutput:
     except FileNotFoundError:
         return {
             "message": "Document embeddings are not loaded. Please run the /load endpoint first.",
-            "context": [],
+            "context": "",
         }
 
     # Check query relevance
     is_relevant, max_similarity = is_query_relevant_openai(chat_query.query, document_embeddings)
-    print("is_relevant:", is_relevant)
+    print(f"is_relevant: {is_relevant}, max_similarity: {max_similarity}")
     if not is_relevant:
         return {
             "message": "This query does not seem to be related to the API documentation. Please refine your question.",
-            "context": [],
+            "context": "",
             "similarity": round(max_similarity, 2),
         }
 
@@ -216,18 +216,25 @@ def chat_route(chat_query: ChatQuery) -> ChatOutput:
     if not relevant_chunks:
         return {
             "message": "I'm sorry, I couldn't find relevant information for your query.",
-            "context": [],
+            "context": "",
         }
+
+    # Serialize relevant chunks into a single string
+    serialized_chunks = "\n".join(relevant_chunks)  # Join chunks with newline for readability
 
     # Generate prompt and get response
     prompt = create_prompt(query=chat_query.query, context=relevant_chunks)
     result = get_completion(client=openai_client, prompt=prompt, model=SETTINGS.openai_model)
 
-    # Return both the result and the relevant chunks as context
+    # Debug: Ensure serialized_chunks is being included
+    print("Serialized Context for Response:", serialized_chunks)
+
+    # Return the result and the serialized chunks as context
     return {
         "message": result,
-        "context": relevant_chunks,  # Send chunks directly as a list
+        "context": serialized_chunks,  # Send serialized chunks as a single string
     }
+
 
 # ---------------- Entry Point ----------------
 
