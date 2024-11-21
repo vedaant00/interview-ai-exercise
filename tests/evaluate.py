@@ -9,8 +9,6 @@ from rank_bm25 import BM25Okapi
 from nltk.tokenize import word_tokenize
 from nltk.util import ngrams
 import nltk
-
-# Ensure necessary NLTK resources are downloaded
 nltk.download('punkt')
 
 # ---------------- Query and Ground Truth Setup ----------------
@@ -58,9 +56,7 @@ queries_with_ground_truth = [
 # Define the API URL
 api_url = "http://localhost:80/chat"
 
-
 # ---------------- Similarity Metric Functions ----------------
-
 
 def bm25_score(query: str, retrieved_context: list[str]) -> float:
     """
@@ -82,7 +78,6 @@ def bm25_score(query: str, retrieved_context: list[str]) -> float:
     scores = bm25.get_scores(tokenized_query)
     return max(scores) if scores else 0.0
 
-
 def tfidf_cosine_similarity(query: str, retrieved_context: list[str]) -> float:
     """
     Calculate TF-IDF Cosine Similarity for the query and retrieved context.
@@ -101,7 +96,6 @@ def tfidf_cosine_similarity(query: str, retrieved_context: list[str]) -> float:
     vectors = vectorizer.fit_transform([query] + retrieved_context)
     cosine_scores = cosine_similarity(vectors[0], vectors[1:])
     return max(cosine_scores[0]) if cosine_scores.size > 0 else 0.0
-
 
 def jaccard_similarity(query: str, retrieved_context: list[str]) -> float:
     """
@@ -123,7 +117,6 @@ def jaccard_similarity(query: str, retrieved_context: list[str]) -> float:
         score = len(intersection) / len(union) if union else 0.0
         best_score = max(best_score, score)
     return best_score
-
 
 # ---------------- Evaluation Function ----------------
 

@@ -75,8 +75,6 @@ SETTINGS = Settings()  # type: ignore
 openai_client = OpenAI(api_key=SETTINGS.openai_api_key.get_secret_value())
 """
 The OpenAI client is configured using the API key defined in `SETTINGS`.
-This client is used for interacting with OpenAI services, such as generating
-embeddings and completions.
 """
 
 # ChromaDB Persistent Client
@@ -84,5 +82,4 @@ chroma_client = chromadb.PersistentClient(path="./.chroma_db")
 """
 ChromaDB client instance for managing the persistent database.
 - The database is stored at the relative path `./.chroma_db`.
-- This client is used for storing and querying document embeddings.
 """

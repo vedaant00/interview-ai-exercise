@@ -23,9 +23,7 @@ app = FastAPI()
 # Create a collection for the vector store
 collection = create_collection(chroma_client, openai_ef, SETTINGS.collection_name)
 
-
 # ---------------- Helper Functions ----------------
-
 
 def embed_text_with_openai(text: str) -> np.ndarray:
     """
@@ -42,7 +40,6 @@ def embed_text_with_openai(text: str) -> np.ndarray:
         return np.array(embedding[0])  # Return the first embedding
     raise ValueError(f"Unexpected embedding format: {embedding}")
 
-
 def cosine_similarity_openai(vec1: np.ndarray, vec2: np.ndarray) -> float:
     """
     Compute cosine similarity between two vectors.
@@ -57,7 +54,6 @@ def cosine_similarity_openai(vec1: np.ndarray, vec2: np.ndarray) -> float:
     vec1 = np.array(vec1).flatten()  # Ensure vectors are 1D
     vec2 = np.array(vec2).flatten()
     return np.dot(vec1, vec2) / (np.linalg.norm(vec1) * np.linalg.norm(vec2))
-
 
 def is_query_relevant_openai(query: str, doc_embeddings: list[np.ndarray], threshold: float = 0) -> tuple[bool, float]:
     """
@@ -90,7 +86,6 @@ def is_query_relevant_openai(query: str, doc_embeddings: list[np.ndarray], thres
     max_similarity = max(similarities)
     return max_similarity >= threshold, max_similarity
 
-
 def save_embeddings_pickle(embeddings: list[np.ndarray], filename: str = "embeddings.pkl"):
     """
     Save embeddings to a file using Pickle.
@@ -101,7 +96,6 @@ def save_embeddings_pickle(embeddings: list[np.ndarray], filename: str = "embedd
     """
     with open(filename, "wb") as f:
         pickle.dump(embeddings, f)
-
 
 def load_embeddings_pickle(filename: str = "embeddings.pkl") -> list[np.ndarray]:
     """
@@ -115,7 +109,6 @@ def load_embeddings_pickle(filename: str = "embeddings.pkl") -> list[np.ndarray]
     """
     with open(filename, "rb") as f:
         return pickle.load(f)
-
 
 def generate_embeddings_in_batches(documents: list, batch_size: int = 10) -> list[np.ndarray]:
     """
@@ -135,7 +128,6 @@ def generate_embeddings_in_batches(documents: list, batch_size: int = 10) -> lis
         batch_embeddings = openai_ef(batch_texts)  # Generate embeddings for the batch
         embeddings.extend(batch_embeddings)
     return embeddings
-
 
 # ---------------- API Routes ----------------
 
@@ -234,7 +226,6 @@ def chat_route(chat_query: ChatQuery) -> dict:
         "message": result,
         "context": serialized_chunks,  # Send serialized chunks as a single string
     }
-
 
 # ---------------- Entry Point ----------------
 

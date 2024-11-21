@@ -1,20 +1,16 @@
-Here is an updated **README** file incorporating everything you've implemented for the project:
+# 🚀 **Retrieval-Augmented Generation (RAG) System**
+
+> 🎯 A simple yet powerful RAG example, enhanced for maximum retrieval accuracy of an API Assistant.
 
 ---
 
-# Retrieval-Augmented Generation (RAG) System
-
-> A simple yet powerful RAG example, enhanced for maximum retrieval accuracy of an API Assistant.
-
----
-
-## **Overview**
+## **📌 Overview**
 
 This project demonstrates a Retrieval-Augmented Generation (RAG) system that fetches contextually relevant information from a set of OpenAPI specifications and generates responses using OpenAI's language models. The system is designed for high accuracy, user-friendly interaction, and flexibility in extending retrieval methods.
 
 ---
 
-## **Project Requirements**
+## **🔧 Project Requirements**
 
 ### **Python Environment**
 
@@ -50,7 +46,7 @@ This project demonstrates a Retrieval-Augmented Generation (RAG) system that fet
 
 ---
 
-## **Installation**
+## **📥 Installation**
 
 ### **1. a. Create Virtual Environment**
 
@@ -77,7 +73,7 @@ source rag-system/bin/activate
 rag-system\Scripts\activate
 ```
 
-Once activated, you can proceed to install the project dependencies. To deactivate the virtual environment later, simply run:
+To deactivate the virtual environment later, simply run:
 
 ```bash
 deactivate
@@ -101,13 +97,13 @@ poetry run pre-commit install
 
 ---
 
-## **Environment Variables**
+## **🔒 Environment Variables**
 
 - Copy `.env_example` to `.env` and fill in the required values (e.g., OpenAI API key, embedding model, etc.).
 
 ---
 
-## **API Details**
+## **📡 API Details**
 
 ### **Backend**
 The project includes an API built with [FastAPI](https://fastapi.tiangolo.com/), containerized using Docker.
@@ -132,7 +128,7 @@ The project includes an API built with [FastAPI](https://fastapi.tiangolo.com/),
 
 ---
 
-## **Frontend**
+## **🖥️ Frontend**
 
 The frontend is built with [Streamlit](https://streamlit.io/) for interactive querying.
 
@@ -145,10 +141,10 @@ The frontend is built with [Streamlit](https://streamlit.io/) for interactive qu
 
 ---
 
-## **Key Features**
+## **💡 Key Features**
 
 1. **OpenAPI Specification Support**:
-   - Retrieves context from 7 OpenAPI specs as mentioned in Notion.
+   - Retrieves context from 7 OpenAPI specs as mentioned in the assignment.
 
 2. **Retrieval System**:
    - Uses OpenAI embeddings to match queries with context from vectorized OpenAPI specs.
@@ -167,7 +163,7 @@ The frontend is built with [Streamlit](https://streamlit.io/) for interactive qu
 
 ---
 
-## **Testing**
+## **🧪 Testing**
 
 1. **Unit Tests**:
    Run tests with:
@@ -188,44 +184,41 @@ The frontend is built with [Streamlit](https://streamlit.io/) for interactive qu
 
 ---
 
-## **Improvements Made**
+## **✨ Improvements Made**
 
 1. **Added Contextual Similarity Metrics**:
-   - Implemented BM25, TF-IDF, and Jaccard similarity metrics for evaluation to better assess the quality of retrieval.
+   - Implemented BM25, TF-IDF, and Jaccard similarity metrics for evaluation.
 
 2. **Embeddings Optimization**:
-   - Improved embedding generation with batching and streamlined storage using Pickle for efficient processing of large datasets.
-   - Leveraged OpenAI's **Ada (text-embedding-ada-002)** model for high-quality, lightweight embeddings, ensuring efficient and accurate similarity calculations.
+   - Improved embedding generation with batching and streamlined storage using Pickle.
+   - Leveraged OpenAI's **Ada (text-embedding-ada-002)** model for high-quality embeddings.
 
 3. **Relevance Filtering**:
-   - Introduced a query relevance filter using cosine similarity on embeddings, ensuring only relevant context is retrieved.
+   - Introduced a query relevance filter using cosine similarity on embeddings.
 
 4. **Improved Error Handling**:
-   - Handles empty or malformed responses gracefully, providing user-friendly messages for irrelevant or out-of-scope queries.
+   - Handles empty or malformed responses gracefully.
 
 5. **Expanded Functionality**  
-   - **Supports Filtering Irrelevant Queries**  
-     - The system filters out irrelevant queries based on context similarity thresholds, enhancing system responsiveness and improving the overall user experience.  
-     - **Current Threshold Setting**  
-       - The similarity threshold is currently set low to accommodate the limitations of the embedding model being used.  
-     - **Reason**  
-       - The embeddings are generated using a generalized model (`text-embedding-ada-002` or `text-embedding-3-small`), which may not capture domain-specific nuances with high precision. A low threshold ensures that even moderately relevant queries are processed without being prematurely discarded.  
+   - Filters irrelevant queries based on context similarity thresholds.  
+     - **Current Threshold**: Set low due to limitations in the embedding model (`text-embedding-ada-002`).  
+     - **Future Plan**: Fine-tune embeddings to capture domain-specific nuances and dynamically adjust thresholds.  
 
 ---
 
-## **Stretch Goals**
+## **🎯 Stretch Goals**
 
-- **Dynamic Threshold Adjustment**: Implement dynamic adjustment of relevance thresholds based on query types or user preferences to improve accuracy.
-- **Advanced Retrieval Techniques**: Explore hybrid search techniques combining BM25 and embedding-based retrieval for better relevance scoring.
-- **Query Caching**: Implement caching mechanisms for frequent queries to reduce response time and improve system efficiency.
-- **Improved Embedding Models**: Experiment with other state-of-the-art embedding models or fine-tuned models for domain-specific tasks.
-- **Interactive Evaluation Dashboard**: Build a dashboard to visualize evaluation metrics (BM25, TF-IDF, Jaccard) and track system performance over time.
-- **Incremental Indexing**: Add support for incremental updates to the vector store without requiring a full reloading of embeddings.
+- **Dynamic Threshold Adjustment**: Adjust relevance thresholds dynamically based on query types.
+- **Hybrid Retrieval Techniques**: Combine BM25 and embedding-based search for better scoring.
+- **Query Caching**: Implement caching for frequently asked queries.
+- **Fine-Tuned Embeddings**: Explore domain-specific fine-tuned embeddings.
+- **Interactive Evaluation Dashboard**: Visualize metrics like BM25, TF-IDF, and Jaccard.
+- **Incremental Indexing**: Support updates to the vector store without full reloads.
 
 ---
 
-## **How to Get Started**
+## **🚀 How to Get Started**
 
-1. Review `src/constants.py` to understand the configuration.
-2. Explore the API in `src/main.py` for detailed logic.
-3. Test the system using provided evaluation scripts.
+1. Review `src/constants.py` for configuration details.
+2. Explore `src/main.py` for API logic.
+3. Test and evaluate using the provided scripts.
