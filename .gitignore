@@ -21,6 +21,12 @@ __pycache__/
 # env files
 .env
 
+# Secrets
 **/secrets.toml
 
+# ChromaDB database
 .chroma_db/
+
+# Pickle files
+*.pkl
+*.pickle

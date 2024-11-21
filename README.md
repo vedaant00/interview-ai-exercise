@@ -1,121 +1,243 @@
-# rag-example
+Here is an updated **README** file incorporating everything you've implemented for the project:
 
-> Very simple RAG example
+---
 
-## Project requirements
+# Retrieval-Augmented Generation (RAG) System
 
-### Pyenv (optional) and `Python 3.11.4`
+> A simple yet powerful RAG example, enhanced for maximum retrieval accuracy of an API Assistant.
 
-- Install [pyenv](https://github.com/pyenv/pyenv) to manage your Python versions and virtual environments:
+---
 
+## **Overview**
+
+This project demonstrates a Retrieval-Augmented Generation (RAG) system that fetches contextually relevant information from a set of OpenAPI specifications and generates responses using OpenAI's language models. The system is designed for high accuracy, user-friendly interaction, and flexibility in extending retrieval methods.
+
+---
+
+## **Project Requirements**
+
+### **Python Environment**
+
+- Install [Pyenv](https://github.com/pyenv/pyenv) to manage Python versions and virtual environments:
   ```bash
   curl -sSL https://pyenv.run | bash
   ```
-
-  - If you are on MacOS and experiencing errors on python install with pyenv, follow this [comment](https://github.com/pyenv/pyenv/issues/1740#issuecomment-738749988)
-  - Add these lines to your `~/.bashrc` or `~/.zshrc` to be able to activate `pyenv virtualenv`:
+  - Add these lines to your `~/.bashrc` or `~/.zshrc` for pyenv functionality:
     ```bash
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
     eval "$(pyenv init --path)"
     ```
-  - Restart your shell
+  - Restart your shell and install Python:
+    ```bash
+    pyenv install 3.11.4
+    ```
 
-- Install the right version of `Python` with `pyenv`:
-  ```bash
-  pyenv install 3.11.4
-  ```
+### **Dependency Management**
 
-### Poetry
-
-- Install [Poetry](https://python-poetry.org) to manage your dependencies and tooling configs:
+- Install [Poetry](https://python-poetry.org) for dependency management:
   ```bash
   curl -sSL https://install.python-poetry.org | python - --version 1.5.1
   ```
-  _If you have not previously installed any Python version, you may need to set your global Python version before installing Poetry:_
-  ```bash
-  pyenv global 3.11.4
-  ```
+  - Ensure Python 3.11.4 is set globally before installing Poetry:
+    ```bash
+    pyenv global 3.11.4
+    ```
 
-### Docker Engine
+### **Docker**
 
-Install [Docker Engine](https://docs.docker.com/engine/install/) to build and run the API's Docker image locally.
+- Install [Docker Engine](https://docs.docker.com/engine/install/) to containerize and run the API.
 
-## Installation
+---
 
-### Create a virtual environment
+## **Installation**
 
-Create your virtual environment and link it to your project folder:
+### **1. a. Create Virtual Environment**
+
+Set up the virtual environment for the project:
 
 ```bash
-pyenv virtualenv 3.11.4 github-api-rag
-pyenv local github-api-rag
+pyenv virtualenv 3.11.4 rag-system
+pyenv local rag-system
 ```
 
-Now, every time you are in your project directory your virtualenv will be activated thanks to `pyenv`!
+### **1. b. Create Virtual Environment Using `venv`**
 
-### Install Python dependencies through poetry
+If you're not using `pyenv`, you can create a virtual environment using Python's built-in `venv` module:
+
+```bash
+# Create the virtual environment
+python3 -m venv rag-system
+
+# Activate the virtual environment
+# On Linux/macOS
+source rag-system/bin/activate
+
+# On Windows
+rag-system\Scripts\activate
+```
+
+Once activated, you can proceed to install the project dependencies. To deactivate the virtual environment later, simply run:
+
+```bash
+deactivate
+```
+
+### **2. Install Dependencies**
+
+Use Poetry to install Python dependencies:
 
 ```bash
 poetry install --no-root
 ```
 
-### Install git hooks (running before commit and push commands)
+### **3. Install Git Hooks**
+
+Install git hooks for pre-commit checks:
 
 ```bash
 poetry run pre-commit install
 ```
 
-## API
+---
 
-The project includes an API built with [FastAPI](https://fastapi.tiangolo.com/). Its code can be found at `src/api`.
+## **Environment Variables**
 
-The API is containerized using a [Docker](https://docs.docker.com/get-started/) image, built from the `Dockerfile` and `docker-compose.yml` at the root.
+- Copy `.env_example` to `.env` and fill in the required values (e.g., OpenAI API key, embedding model, etc.).
 
-### Environment Variables
+---
 
-Copy .env_example to .env and fill in the values.
+## **API Details**
 
-### Build and start the API
+### **Backend**
+The project includes an API built with [FastAPI](https://fastapi.tiangolo.com/), containerized using Docker.
 
-To build and start the API, use the following Makefile command:
+1. **Start the API**:
+   - Using Docker:
+     ```bash
+     make start-api
+     ```
+   - Without Docker:
+     ```bash
+     make dev-api
+     ```
 
-```bash
-make start-api
-```
+2. **API Endpoints**:
+   - `/health`: Check API health.
+   - `/load`: Load OpenAPI specification data into the vector store and precompute embeddings.
+   - `/chat`: Handle user queries and return responses based on relevant context.
 
-you can also use `make dev-api` to start the API without using docker.
+3. **Swagger Documentation**:
+   - Access Swagger UI at `/docs`.
 
-For more details on the API routes, check the automatically generated [swagger](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#importing-postman-data) at the `/docs` url.
+---
 
-## Frontend
+## **Frontend**
 
-The project includes a frontend built with [Streamlit](https://streamlit.io/). Its code can be found at `demo`.
+The frontend is built with [Streamlit](https://streamlit.io/) for interactive querying.
 
-Run the frontend with:
+1. Start the frontend:
+   ```bash
+   make start-app
+   ```
 
-```bash
-make start-app
-```
+2. Use the web interface to test API queries interactively.
 
-## Testing
+---
 
-To run unit tests, run `pytest` with:
+## **Key Features**
 
-```bash
-pytest tests --cov src
-```
+1. **OpenAPI Specification Support**:
+   - Retrieves context from 7 OpenAPI specs as mentioned in Notion.
 
-or
+2. **Retrieval System**:
+   - Uses OpenAI embeddings to match queries with context from vectorized OpenAPI specs.
+   - Filters irrelevant queries and responds appropriately.
 
-```bash
-make test
-```
+3. **Evaluation Metrics**:
+   - **BM25**: Measures term relevance using ranking functions.
+   - **TF-IDF Cosine Similarity**: Measures similarity based on term frequency-inverse document frequency.
+   - **Jaccard Similarity**: Measures overlap of bigrams (2-word sequences).
 
-## Formatting and static analysis
+4. **Embeddings Management**:
+   - Efficiently generates and stores embeddings for large datasets using batching and Pickle.
 
-There is some preset up formatting and static analysis tools to help you write clean code. check the make file for more details.
+5. **Graceful Limitations**:
+   - Returns a user-friendly message for out-of-scope or irrelevant queries.
 
-# Get Started
+---
 
-Have a look in `src/constants.py`. Then check out the server in `src/main.py`.
+## **Testing**
+
+1. **Unit Tests**:
+   Run tests with:
+   ```bash
+   pytest tests --cov src
+   ```
+   or:
+   ```bash
+   make test
+   ```
+
+2. **Evaluate Retrieval System**:
+   Evaluate system performance with similarity metrics:
+   ```bash
+   python tests/evaluate.py
+   ```
+   Results are saved in `evaluation_results_with_similarity.csv`.
+
+---
+
+Here's the updated **README** section with the mention of Ada for embedding generation in the **Improvements Made** section:
+
+---
+
+## **Improvements Made**
+
+1. **Added Contextual Similarity Metrics**:
+   - Implemented BM25, TF-IDF, and Jaccard similarity metrics for evaluation to better assess the quality of retrieval.
+
+2. **Embeddings Optimization**:
+   - Improved embedding generation with batching and streamlined storage using Pickle for efficient processing of large datasets.
+   - Leveraged OpenAI's **Ada (text-embedding-ada-002)** model for high-quality, lightweight embeddings, ensuring efficient and accurate similarity calculations.
+
+3. **Relevance Filtering**:
+   - Introduced a query relevance filter using cosine similarity on embeddings, ensuring only relevant context is retrieved.
+
+4. **Improved Error Handling**:
+   - Handles empty or malformed responses gracefully, providing user-friendly messages for irrelevant or out-of-scope queries.
+
+5. **Expanded Functionality**:
+   - Supports filtering irrelevant queries based on context similarity thresholds, improving system responsiveness and user experience.
+
+---
+
+Here's the updated **Stretch Goals** section with improvements:
+
+---
+
+## **Stretch Goals**
+
+- **Dynamic Threshold Adjustment**: Implement dynamic adjustment of relevance thresholds based on query types or user preferences to improve accuracy.
+- **Advanced Retrieval Techniques**: Explore hybrid search techniques combining BM25 and embedding-based retrieval for better relevance scoring.
+- **Query Caching**: Implement caching mechanisms for frequent queries to reduce response time and improve system efficiency.
+- **Improved Embedding Models**: Experiment with other state-of-the-art embedding models or fine-tuned models for domain-specific tasks.
+- **Interactive Evaluation Dashboard**: Build a dashboard to visualize evaluation metrics (BM25, TF-IDF, Jaccard) and track system performance over time.
+- **Incremental Indexing**: Add support for incremental updates to the vector store without requiring a full reloading of embeddings.
+
+---
+
+## **Formatting and Analysis**
+
+- Use pre-configured formatting and static analysis tools for clean code:
+  ```bash
+  make lint
+  ```
+
+---
+
+## **How to Get Started**
+
+1. Review `src/constants.py` to understand the configuration.
+2. Explore the API in `src/main.py` for detailed logic.
+3. Test the system using provided evaluation scripts.

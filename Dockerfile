@@ -34,7 +34,7 @@ ENV \
 
 # Install dependencies with pip from exported requirements.txt
 COPY --from=poetry-requirements-stage /tmp/requirements.txt /code/requirements.txt
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+RUN pip install scikit-learn --no-cache-dir --upgrade -r /code/requirements.txt
 
 # Copy API files
 COPY src ./src
